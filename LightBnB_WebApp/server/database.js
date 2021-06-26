@@ -140,7 +140,7 @@ exports.getAllReservations = getAllReservations;
   `;
 
   // 5
-  console.log(queryString, queryParams);
+  // console.log(queryString, queryParams);
 
   // 6
   return pool.query(queryString, queryParams).then((res) => res.rows);
@@ -154,9 +154,24 @@ exports.getAllProperties = getAllProperties;
  * @return {Promise<{}>} A promise to the property.
  */
 const addProperty = function(property) {
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
-  return Promise.resolve(property);
+  const propertyAttributes = Object.keys(property).toString();
+  console.log(propertyAttributes);
+  const propertyValuesReferences = Object.keys(property).map((val, index) => `$${index + 1}`).toString();
+  console.log(propertyValuesReferences);
+  const propertyValues = Object.values(property);
+  console.log(propertyValues);
+
+  return pool
+    .query(`
+    INSERT INTO properties (${propertyAttributes})
+    VALUES (${propertyValuesReferences}) RETURNING *
+    `, propertyValues)
+    .then(result => result.rows[0])
+    .catch(err => console.log(err.message));
+
+  // const propertyId = Object.keys(properties).length + 1;
+  // property.id = propertyId;
+  // properties[propertyId] = property;
+  // return Promise.resolve(property);
 }
 exports.addProperty = addProperty;
