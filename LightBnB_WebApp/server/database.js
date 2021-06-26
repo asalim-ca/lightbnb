@@ -155,11 +155,11 @@ exports.getAllProperties = getAllProperties;
  */
 const addProperty = function(property) {
   const propertyAttributes = Object.keys(property).toString();
-  console.log(propertyAttributes);
+  // console.log(propertyAttributes);
   const propertyValuesReferences = Object.keys(property).map((val, index) => `$${index + 1}`).toString();
-  console.log(propertyValuesReferences);
+  // console.log(propertyValuesReferences);
   const propertyValues = Object.values(property);
-  console.log(propertyValues);
+  // console.log(propertyValues);
 
   return pool
     .query(`
